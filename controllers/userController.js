@@ -1,11 +1,8 @@
-const fs = require('fs');
+
 const User = require('../models/userModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
-/* const users = JSON.parse(
-  fs.readFileSync(`${__dirname}/../dev-data/data/users.json`)
-); */
 
 const filterObj = (obj, ...allowedFileds) => {
   const newObj = {};
@@ -40,7 +37,7 @@ exports.getUserById = catchAsync(async (req, res, next) => {
 exports.addUser = catchAsync(async (req, res) => {
   const user = await User.create(req.body);
 
-  return res.status(200).json({
+  return res.status(201).json({
     status: 'success',
     data: { user },
   });
