@@ -1,4 +1,5 @@
 const Task = require("../models/taskModel");
+const User = require("../models/userModel");
 const Comment = require("../models/commentModel");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync.js");
@@ -91,7 +92,24 @@ exports.CreateComment = catchAsync(async (req, res) => {
     comment,
   });
 });
-
+exports.ShareTo = catchAsync(async (req, res, next) => {
+    console.log(req.body.share);
+  const user = await User.findById(req.body.share);
+  if (!user) {
+    return next(new AppError("user not Found ! try Again .", 404));
+  }
+  const task = await Task.findByIdAndUpdate(req.params.id, req.body);
+  if (!task) {
+    return next(new AppError("task not Found ! try Again .", 404));
+  }
+  res.status(200).json({
+    status: "success",
+    task,
+  });
+});
+exports.getshare = catchAsync(async(req, res)=>{
+    
+})
 //admin
 
 exports.getAllTask = catchAsync(async (req, res) => {

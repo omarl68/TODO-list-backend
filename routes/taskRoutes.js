@@ -15,9 +15,16 @@ router
   .get(authController.protect, taskController.getMyTaskById)
   .put(authController.protect, taskController.updateMyTask)
   .delete(authController.protect, taskController.deleteMyTask);
-router
-  .post("/:id/comment",authController.protect, taskController.CreateComment)
-
+router.post(
+  "/:id/comment",
+  authController.protect,
+  taskController.CreateComment
+);
+router.patch(
+  "/share/:id",
+  authController.protect,
+  taskController.ShareTo
+);
 
 router.use(checkRole("admin"));
 router

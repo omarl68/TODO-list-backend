@@ -26,16 +26,24 @@ const taskSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
-  comments:[{
-    type: mongoose.Schema.Types.ObjectId,
-    ref:"Comments"
-  }]
+  comments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Comments",
+    },
+  ],
+  share: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 });
 
-taskSchema.pre(/^find/,function(next){
-    this.populate({path:"comments"});
-    next()
-})
+taskSchema.pre(/^find/, function (next) {
+  this.populate({ path: "comments" });
+  next();
+});
 
 const Task = mongoose.model("Task", taskSchema);
 
