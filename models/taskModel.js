@@ -22,7 +22,20 @@ const taskSchema = mongoose.Schema({
     default: Date.now(),
     select: false,
   },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  comments:[{
+    type: mongoose.Schema.Types.ObjectId,
+    ref:"Comments"
+  }]
 });
+
+taskSchema.pre(/^find/,function(next){
+    this.populate({path:"comments"});
+    next()
+})
 
 const Task = mongoose.model("Task", taskSchema);
 

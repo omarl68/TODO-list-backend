@@ -1,7 +1,8 @@
-const express = require('express');
-const userController = require('../controllers/userController');
-const authController = require('../controllers/authController');
+const express = require("express");
+const userController = require("../controllers/userController");
+const authController = require("../controllers/authController");
 const router = express.Router();
+const checkRole = require("../controllers/checkRole");
 /**
  * @swagger
  * components:
@@ -37,19 +38,19 @@ const router = express.Router();
  *         passwordConfirm: Aa123456
  */
 
+router.post("/signup", authController.signup);
+router.post("/login", authController.login);
 
-router.post('/signup', authController.signup);
-router.post('/login', authController.login);
+router.post("/forgotPassword", authController.forgotPassword);
+router.patch("/resetPassword/:token", authController.resetPassword);
 
-router.post('/forgotPassword', authController.forgotPassword);
-router.patch('/resetPassword/:token', authController.resetPassword);
-
+router.use(checkRole("user", "admin"));
 router.patch(
-  '/updateMyPassword',
+  "/updateMyPassword",
   authController.protect,
   authController.updatePassword
 );
-router.patch('/updateMe', authController.protect, userController.updateMe);
+router.patch("/updateMe", authController.protect, userController.updateMe);
 
 //users
 
@@ -70,7 +71,7 @@ router.patch('/updateMe', authController.protect, userController.updateMe);
  *                 $ref: '#/components/schemas/users'
  */
 
-
+router.use(checkRole("admin"));
 /**
  * @swagger
  * /users:
@@ -93,9 +94,10 @@ router.patch('/updateMe', authController.protect, userController.updateMe);
  *       500:
  *         description: Some server error
  */
-router.route('/').get( authController.protect, userController.getAllUsers).post( authController.protect, userController.addUser);
-
-
+router
+  .route("/")
+  .get(authController.protect, userController.getAllUsers)
+  .post(authController.protect, userController.addUser);
 
 /**
  * @swagger
@@ -132,7 +134,7 @@ router.route('/').get( authController.protect, userController.getAllUsers).post(
  *        name: id
  *        schema:
  *          type: string
- *       
+ *
  *        description: The user id
  *    requestBody:
  *      required: true
@@ -153,7 +155,6 @@ router.route('/').get( authController.protect, userController.getAllUsers).post(
  *        description: Some error happened
  */
 
-
 /**
  * @swagger
  * /users/{id}:
@@ -167,7 +168,7 @@ router.route('/').get( authController.protect, userController.getAllUsers).post(
  *           type: string
  *         required: true
  *         description: The user id
- * 
+ *
  *     responses:
  *       204:
  *         description: The user was deleted
@@ -175,9 +176,9 @@ router.route('/').get( authController.protect, userController.getAllUsers).post(
  *         description: The user was not found
  */
 router
-  .route('/:id')
-  .get( authController.protect, userController.getUserById)
-  .patch( authController.protect, userController.UpdateUser)
-  .delete( authController.protect, userController.DeleteUser);
+  .route("/:id")
+  .get(authController.protect, userController.getUserById)
+  .patch(authController.protect, userController.UpdateUser)
+  .delete(authController.protect, userController.DeleteUser);
 
 module.exports = router;

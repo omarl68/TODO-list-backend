@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const AppError = require('../utils/appError');
 const sendEmail = require('../utils/email');
 const crypto = require('crypto');
-const { promisify } = require('util');
+
 
 const createSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
