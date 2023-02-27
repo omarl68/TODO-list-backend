@@ -3,9 +3,9 @@ const User = require('../models/userModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
-const users = JSON.parse(
+/* const users = JSON.parse(
   fs.readFileSync(`${__dirname}/../dev-data/data/users.json`)
-);
+); */
 
 const filterObj = (obj, ...allowedFileds) => {
   const newObj = {};

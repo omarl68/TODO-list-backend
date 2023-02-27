@@ -26,6 +26,9 @@ const router = express.Router();
  *         passwordConfirm:
  *           type: string
  *           description: Your Confirm Password
+ *         role:
+ *          type: string
+ *          description: admin, user ,rh ,team-leader
  *       example:
  *         _id: 63f487007fc29754b6833fc4
  *         name: test
@@ -90,7 +93,7 @@ router.patch('/updateMe', authController.protect, userController.updateMe);
  *       500:
  *         description: Some server error
  */
-router.route('/').get(userController.getAllUsers).post(userController.addUser);
+router.route('/').get( authController.protect, userController.getAllUsers).post( authController.protect, userController.addUser);
 
 
 
@@ -173,8 +176,8 @@ router.route('/').get(userController.getAllUsers).post(userController.addUser);
  */
 router
   .route('/:id')
-  .get(userController.getUserById)
-  .patch(userController.UpdateUser)
-  .delete(userController.DeleteUser);
+  .get( authController.protect, userController.getUserById)
+  .patch( authController.protect, userController.UpdateUser)
+  .delete( authController.protect, userController.DeleteUser);
 
 module.exports = router;
