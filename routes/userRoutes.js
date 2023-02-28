@@ -2,7 +2,7 @@ const express = require("express");
 const userController = require("../controllers/userController");
 const authController = require("../controllers/authController");
 const router = express.Router();
-const checkRole = require("../middlewares/checkRole");
+
 const {
   createUser,
   updateUser,
@@ -65,17 +65,18 @@ router.patch(
   authController.resetPassword
 );
 
-router.use(checkRole("user", "admin"));
 router.patch(
   "/updateMyPassword",
   authController.protect,
   schemaValidator(updatePassword),
+  authController.restrictTo("admin", "user"),
   authController.updatePassword
 );
 router.patch(
   "/updateMe",
   authController.protect,
   schemaValidator(updateMe),
+  authController.restrictTo("admin", "user"),
   userController.updateMe
 );
 
@@ -98,7 +99,6 @@ router.patch(
  *                 $ref: '#/components/schemas/users'
  */
 
-router.use(checkRole("admin"));
 /**
  * @swagger
  * /users:
@@ -126,11 +126,13 @@ router
   .get(
     authController.protect,
     schemaValidator(getUsers, "params"),
+    authController.restrictTo("admin"),
     userController.getAllUsers
   )
   .post(
     authController.protect,
     schemaValidator(createUser),
+    authController.restrictTo("admin"),
     userController.addUser
   );
 
@@ -215,17 +217,20 @@ router
   .get(
     authController.protect,
     schemaValidator(checkUserId, "params"),
+    authController.restrictTo("admin"),
     userController.getUserById
   )
   .patch(
     authController.protect,
     schemaValidator(checkUserId, "params"),
+    authController.restrictTo("admin"),
     schemaValidator(updateUser),
     userController.UpdateUser
   )
   .delete(
     authController.protect,
     schemaValidator(checkUserId, "params"),
+    authController.restrictTo("admin"),
     userController.DeleteUser
   );
 

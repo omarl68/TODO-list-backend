@@ -13,9 +13,10 @@ exports.createUser = Joi.object({
     .required()
     .valid(Joi.ref("password"))
     .regex(/^[a-zA-Z0-9]{8,30}$/),
+  role:Joi.string().optional()
 });
 exports.updateUser = Joi.object({
-  name: Joi.string().trim().min(2).max(20).required().optional(),
+  name: Joi.string().trim().min(2).max(20).optional(),
   email: Joi.string().min(3).required().email().optional(),
   password: Joi.string()
     .min(8)
@@ -28,22 +29,12 @@ exports.updateUser = Joi.object({
     .valid(Joi.ref("password"))
     .regex(/^[a-zA-Z0-9]{8,30}$/)
     .optional(),
+    role:Joi.string().optional()
 });
 
 exports.getUsers = Joi.object({
-  name: Joi.string().trim().min(2).max(20).required().optional(),
-  email: Joi.string().min(3).required().email().optional(),
-  password: Joi.string()
-    .min(8)
-    .required()
-    .regex(/^[a-zA-Z0-9]{8,30}$/)
-    .optional(),
-  passwordConfirm: Joi.string()
-    .min(8)
-    .required()
-    .valid(Joi.ref("password"))
-    .regex(/^[a-zA-Z0-9]{8,30}$/)
-    .optional(),
+  name: Joi.string().trim().min(2).max(20).optional(),
+  email: Joi.string().min(3).email().optional(),
 });
 exports.checkUserId = Joi.object({
   id: JoiObjectId().required(),
@@ -95,14 +86,14 @@ exports.updatePassword = Joi.object().keys({
   passwordCurrely: Joi.string()
     .required()
     .regex(/^[a-zA-Z0-9]{8,30}$/),
-  newPassword: Joi.string()
+  password: Joi.string()
     .min(8)
     .required()
     .regex(/^[a-zA-Z0-9]{8,30}$/),
-  newPasswordConfirm: Joi.string()
+  passwordConfirm: Joi.string()
     .min(8)
     .required()
-    .valid(Joi.ref("newPassword"))
+    .valid(Joi.ref("password"))
     .regex(/^[a-zA-Z0-9]{8,30}$/),
 });
 exports.updateMe = Joi.object().keys({

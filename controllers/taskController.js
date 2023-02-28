@@ -3,12 +3,14 @@ const User = require("../db/models/userModel");
 const Comment = require("../db/models/commentModel");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync.js");
+const TaskRepo = require("../db/repositories/taskRepo");
+const UserRepo = require("../db/repositories/userRepo");
+const CommentRepo = require("../db/repositories/commentRepo");
 
 //user
 exports.getMyTask = catchAsync(async (req, res, next) => {
   const createdBy = req.user._id;
-
-  const tasks = await Task?.find({ createdBy });
+  const tasks = await TaskRepo.find({ createdBy });
 
   if (!tasks || !createdBy) {
     return next(new AppError("tasks not Found ! try Again .", 404));
@@ -20,11 +22,10 @@ exports.getMyTask = catchAsync(async (req, res, next) => {
 });
 
 exports.getMyTaskById = catchAsync(async (req, res, next) => {
-  const tasks = await Task?.findOne({
+  const tasks = await TaskRepo.findOne({
     _id: req.params.id,
     createdBy: req.user?._id,
   });
-
   if (!tasks) {
     return next(new AppError("tasks not Found ! try Again .", 404));
   }
@@ -35,7 +36,7 @@ exports.getMyTaskById = catchAsync(async (req, res, next) => {
 });
 
 exports.updateMyTask = catchAsync(async (req, res, next) => {
-  const task = await Task.findOneAndUpdate(
+  /*   const task = await Task.findOneAndUpdate(
     {
       _id: req.params.id,
       createdBy: req.user?._id,
@@ -45,6 +46,13 @@ exports.updateMyTask = catchAsync(async (req, res, next) => {
       runValidators: true,
       new: true,
     }
+  ); */
+  const task = await TaskRepo.findByIdAndUpdate(
+    {
+      _id: req.params.id,
+      createdBy: req.user?._id,
+    },
+    req.body
   );
   if (!task) {
     return next(new AppError("task not Found ! try Again .", 404));
@@ -57,17 +65,10 @@ exports.updateMyTask = catchAsync(async (req, res, next) => {
 });
 
 exports.deleteMyTask = catchAsync(async (req, res, next) => {
-  const task = await Task.findOneAndRemove(
-    {
-      _id: req.params.id,
-      createdBy: req.user?._id,
-    },
-    req.body,
-    {
-      runValidators: true,
-      new: true,
-    }
-  );
+  const task = await TaskRepo.findByIdAndRemove({
+    _id: req.params.id,
+    createdBy: req.user?._id,
+  });
   if (!task) {
     return next(new AppError("task not Found ! try Again .", 404));
   }
@@ -80,8 +81,12 @@ exports.deleteMyTask = catchAsync(async (req, res, next) => {
 
 exports.CreateComment = catchAsync(async (req, res) => {
   req.body.creator = req.user?._id;
-  const comment = await Comment.create(req.body);
-  const newTask = await Task.findById({
+  /*   const comment = await Comment.create(req.body); 
+const newTask = await Task.findById({
+  _id: req.params.id,
+});*/
+  const comment = await CommentRepo.create(req.body);
+  const newTask = await TaskRepo.findById({
     _id: req.params.id,
   });
   newTask.comments.push(comment._id);
@@ -92,14 +97,13 @@ exports.CreateComment = catchAsync(async (req, res) => {
   });
 });
 
-
 exports.ShareTo = catchAsync(async (req, res, next) => {
   console.log(req.body.share);
-  const user = await User.findById(req.body.share);
+  const user = await UserRepo.findById(req.body.share);
   if (!user) {
     return next(new AppError("user not Found ! try Again .", 404));
   }
-  const task = await Task.findByIdAndUpdate(req.params.id, req.body);
+  const task = await TaskRepo.findByIdAndUpdate(req.params.id, req.body);
   if (!task) {
     return next(new AppError("task not Found ! try Again .", 404));
   }
@@ -109,12 +113,10 @@ exports.ShareTo = catchAsync(async (req, res, next) => {
   });
 });
 
-
 exports.getshare = catchAsync(async (req, res) => {
-  const tasks = await Task.find({
+  const tasks = await TaskRepo.find({
     share: req.user?._id,
   });
-  console.log(tasks);
   if (!tasks) {
     return next(new AppError("tasks not Found ! try Again .", 404));
   }
@@ -127,7 +129,7 @@ exports.getshare = catchAsync(async (req, res) => {
 //admin
 
 exports.getAllTask = catchAsync(async (req, res) => {
-  const tasks = await Task.find();
+ const tasks = await TaskRepo.find(); 
   res.status(200).json({
     status: "success",
     results: tasks.length,
@@ -136,7 +138,7 @@ exports.getAllTask = catchAsync(async (req, res) => {
 });
 
 exports.getTaskById = catchAsync(async (req, res, next) => {
-  const tasks = await Task?.findById(req.params.id);
+  const tasks = await TaskRepo?.findById(req.params.id);
   if (!tasks) {
     return next(new AppError("tasks not Found ! try Again .", 404));
   }
@@ -147,7 +149,7 @@ exports.getTaskById = catchAsync(async (req, res, next) => {
 });
 exports.CreateTask = catchAsync(async (req, res) => {
   req.body.createdBy = req.user.id;
-  const task = await Task.create(req.body);
+  const task = await TaskRepo.create(req.body);
 
   return res.status(201).json({
     status: "success",
@@ -156,10 +158,7 @@ exports.CreateTask = catchAsync(async (req, res) => {
 });
 
 exports.UpdateTask = catchAsync(async (req, res) => {
-  const task = await Task.findByIdAndUpdate(req.params.id, req.body, {
-    runValidators: true,
-    new: true,
-  });
+  const task = await TaskRepo.findByIdAndUpdate(req.params.id, req.body);
   if (!task) {
     return next(new AppError("task not Found ! try Again .", 404));
   }
@@ -170,7 +169,7 @@ exports.UpdateTask = catchAsync(async (req, res) => {
   });
 });
 exports.DeleteTask = catchAsync(async (req, res) => {
-  const task = await Task.findByIdAndDelete(req.params.id);
+  const task = await TaskRepo.findByIdAndDelete(req.params.id);
   if (!task) {
     return next(new AppError("Task not Found ! try Again .", 404));
   }
