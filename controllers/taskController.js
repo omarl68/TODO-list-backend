@@ -88,7 +88,6 @@ exports.CreateComment = catchAsync(async (req, res) => {
   await newTask.save();
   res.status(200).json({
     status: "success",
-    results: comment.length,
     comment,
   });
 });
