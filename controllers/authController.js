@@ -1,4 +1,4 @@
-const User = require('./../models/userModel');
+const User = require('../db/models/userModel');
 const catchAsync = require('../utils/catchAsync.js');
 const jwt = require('jsonwebtoken');
 const AppError = require('../utils/appError');
@@ -74,7 +74,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   next();
 });
 
-exports.restrictTo = (...roles) => {
+/* exports.restrictTo = (...roles) => {
   return async (req, res, next) => {
     if (!roles.includes(req.user.role)) {
       return next(
@@ -83,7 +83,7 @@ exports.restrictTo = (...roles) => {
     }
     next();
   };
-};
+}; */
 
 exports.forgotPassword = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });

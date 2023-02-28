@@ -1,6 +1,6 @@
-const Task = require("../models/taskModel");
-const User = require("../models/userModel");
-const Comment = require("../models/commentModel");
+const Task = require("../db/models/taskModel");
+const User = require("../db/models/userModel");
+const Comment = require("../db/models/commentModel");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync.js");
 
@@ -91,6 +91,8 @@ exports.CreateComment = catchAsync(async (req, res) => {
     comment,
   });
 });
+
+
 exports.ShareTo = catchAsync(async (req, res, next) => {
   console.log(req.body.share);
   const user = await User.findById(req.body.share);
@@ -106,6 +108,8 @@ exports.ShareTo = catchAsync(async (req, res, next) => {
     task,
   });
 });
+
+
 exports.getshare = catchAsync(async (req, res) => {
   const tasks = await Task.find({
     share: req.user?._id,
