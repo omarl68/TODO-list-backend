@@ -12,8 +12,8 @@ module.exports = class UserRepo {
   static async findById(id) {
     return await userModel.findById(id);
   }
-  static async find() {
-    return await userModel.find();
+  static async find(obj) {
+    return await userModel.find(obj);
   }
 
   static async findByIdAndUpdate(id, payload) {

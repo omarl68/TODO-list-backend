@@ -1,6 +1,4 @@
-const Task = require("../db/models/taskModel");
-const User = require("../db/models/userModel");
-const Comment = require("../db/models/commentModel");
+
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync.js");
 const TaskRepo = require("../db/repositories/taskRepo");

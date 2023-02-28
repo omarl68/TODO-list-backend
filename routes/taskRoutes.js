@@ -4,6 +4,7 @@ const authController = require("../controllers/authController");
 const router = express.Router();
 
 const { createTask, getTasks, updateTask } = require("./schemas/taskSchemas");
+const { createComment } = require("./schemas/commentSchemas");
 const { schemaValidator } = require("../middlewares/schemaValidator");
 
 router

@@ -55,25 +55,25 @@ router.post("/signup", schemaValidator(signup), authController.signup);
 router.post("/login", schemaValidator(login), authController.login);
 
 router.post(
-  "/forgotPassword",
+  "/forgotpassword",
   schemaValidator(forgetPassword),
   authController.forgotPassword
 );
 router.patch(
-  "/resetPassword/:token",
+  "/resetpassword/:token",
   schemaValidator(resetPassword),
   authController.resetPassword
 );
 
 router.patch(
-  "/updateMyPassword",
+  "/update-password",
   authController.protect,
   schemaValidator(updatePassword),
   authController.restrictTo("admin", "user"),
   authController.updatePassword
 );
 router.patch(
-  "/updateMe",
+  "/me",
   authController.protect,
   schemaValidator(updateMe),
   authController.restrictTo("admin", "user"),
