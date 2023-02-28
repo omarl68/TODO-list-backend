@@ -2,7 +2,7 @@ const express = require("express");
 const taskController = require("../controllers/taskController");
 const authController = require("../controllers/authController");
 const router = express.Router();
-const checkRole = require("../controllers/checkRole");
+const checkRole = require("../middlewares/checkRole");
 
 router.use(checkRole("user", "admin"));
 router
@@ -20,11 +20,8 @@ router.post(
   authController.protect,
   taskController.CreateComment
 );
-router.patch(
-  "/share/:id",
-  authController.protect,
-  taskController.ShareTo
-);
+router.patch("/share/:id", authController.protect, taskController.ShareTo);
+router.route("/shared/me").get(authController.protect, taskController.getshare);
 
 router.use(checkRole("admin"));
 router

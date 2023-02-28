@@ -93,7 +93,7 @@ exports.CreateComment = catchAsync(async (req, res) => {
   });
 });
 exports.ShareTo = catchAsync(async (req, res, next) => {
-    console.log(req.body.share);
+  console.log(req.body.share);
   const user = await User.findById(req.body.share);
   if (!user) {
     return next(new AppError("user not Found ! try Again .", 404));
@@ -107,9 +107,20 @@ exports.ShareTo = catchAsync(async (req, res, next) => {
     task,
   });
 });
-exports.getshare = catchAsync(async(req, res)=>{
-    
-})
+exports.getshare = catchAsync(async (req, res) => {
+  const tasks = await Task.find({
+    share: req.user?._id,
+  });
+  console.log(tasks);
+  if (!tasks) {
+    return next(new AppError("tasks not Found ! try Again .", 404));
+  }
+  res.status(200).json({
+    status: "success",
+    results: tasks.length,
+    tasks: tasks,
+  });
+});
 //admin
 
 exports.getAllTask = catchAsync(async (req, res) => {

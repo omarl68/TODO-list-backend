@@ -11,6 +11,8 @@ const taskSchema = mongoose.Schema({
   description: {
     type: String,
     trim: true,
+    minLength: 5,
+    required: [true, 'must be have a description'],
   },
   statustask: {
     type: String,

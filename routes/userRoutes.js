@@ -2,7 +2,20 @@ const express = require("express");
 const userController = require("../controllers/userController");
 const authController = require("../controllers/authController");
 const router = express.Router();
-const checkRole = require("../controllers/checkRole");
+const checkRole = require("../middlewares/checkRole");
+const {
+  createUser,
+  updateUser,
+  getUsers,
+  checkUserId,
+  signup,
+  login,
+  updatePassword,
+  updateMe,
+  resetPassword,
+  forgetPassword,
+} = require("./schemas/userSchemas");
+const { schemaValidator } = require("../middlewares/schemaValidator");
 /**
  * @swagger
  * components:
@@ -38,19 +51,33 @@ const checkRole = require("../controllers/checkRole");
  *         passwordConfirm: Aa123456
  */
 
-router.post("/signup", authController.signup);
-router.post("/login", authController.login);
+router.post("/signup", schemaValidator(signup), authController.signup);
+router.post("/login", schemaValidator(login), authController.login);
 
-router.post("/forgotPassword", authController.forgotPassword);
-router.patch("/resetPassword/:token", authController.resetPassword);
+router.post(
+  "/forgotPassword",
+  schemaValidator(forgetPassword),
+  authController.forgotPassword
+);
+router.patch(
+  "/resetPassword/:token",
+  schemaValidator(resetPassword),
+  authController.resetPassword
+);
 
 router.use(checkRole("user", "admin"));
 router.patch(
   "/updateMyPassword",
   authController.protect,
+  schemaValidator(updatePassword),
   authController.updatePassword
 );
-router.patch("/updateMe", authController.protect, userController.updateMe);
+router.patch(
+  "/updateMe",
+  authController.protect,
+  schemaValidator(updateMe),
+  userController.updateMe
+);
 
 //users
 
@@ -96,8 +123,16 @@ router.use(checkRole("admin"));
  */
 router
   .route("/")
-  .get(authController.protect, userController.getAllUsers)
-  .post(authController.protect, userController.addUser);
+  .get(
+    authController.protect,
+    schemaValidator(getUsers, "params"),
+    userController.getAllUsers
+  )
+  .post(
+    authController.protect,
+    schemaValidator(createUser),
+    userController.addUser
+  );
 
 /**
  * @swagger
@@ -177,8 +212,21 @@ router
  */
 router
   .route("/:id")
-  .get(authController.protect, userController.getUserById)
-  .patch(authController.protect, userController.UpdateUser)
-  .delete(authController.protect, userController.DeleteUser);
+  .get(
+    authController.protect,
+    schemaValidator(checkUserId, "params"),
+    userController.getUserById
+  )
+  .patch(
+    authController.protect,
+    schemaValidator(checkUserId, "params"),
+    schemaValidator(updateUser),
+    userController.UpdateUser
+  )
+  .delete(
+    authController.protect,
+    schemaValidator(checkUserId, "params"),
+    userController.DeleteUser
+  );
 
 module.exports = router;
