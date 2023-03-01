@@ -1,6 +1,7 @@
 const Joi = require("joi");
 const { JoiObjectId } = require("../../middlewares/schemaValidator");
 
+
 /**
  * @swagger
  * components:
@@ -29,13 +30,39 @@ const { JoiObjectId } = require("../../middlewares/schemaValidator");
  *          type: string
  *          description: admin, user ,rh ,team-leader
  *       example:
- *         _id: 63f487007fc29754b6833fc4
  *         name: test
  *         email: test@email.com
  *         password: Aa123456
  *         passwordConfirm: Aa123456
+ *         role: admin
  */
 
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Updatepwd:
+ *       type: object
+ *       required:
+ *         - passwordCurrely
+ *         - password
+ *         - passwordConfirm
+ *       properties:
+ *         passwordCurrely:
+ *           type: string
+ *           description: Your passwordCurrely
+ *         password:
+ *           type: string
+ *           description: Your Password
+ *         passwordConfirm:
+ *           type: string
+ *           description: Your Confirm Password
+ *       example:
+ *         passwordCurrely: 12345678
+ *         password: Aa123456
+ *         passwordConfirm: Aa123456
+ */
 
 exports.createUser = Joi.object({
   name: Joi.string().trim().min(2).max(20).required(),
@@ -76,13 +103,7 @@ exports.checkUserId = Joi.object({
   id: JoiObjectId().required(),
 });
 
-exports.forgetPassword = Joi.object({
-  email: Joi.string().required(),
-});
 
-exports.resetPasswordToken = Joi.object({
-  token: Joi.string().required(),
-});
 
 exports.resetPassword = Joi.object({
   password: Joi.string()
@@ -96,27 +117,6 @@ exports.resetPassword = Joi.object({
     .required(),
 });
 
-exports.signup = Joi.object().keys({
-  name: Joi.string().trim().min(2).max(20).required(),
-  email: Joi.string().min(3).required().email(),
-  password: Joi.string()
-    .min(8)
-    .required()
-    .regex(/^[a-zA-Z0-9]{8,30}$/),
-  passwordConfirm: Joi.string()
-    .min(8)
-    .required()
-    .valid(Joi.ref("password"))
-    .regex(/^[a-zA-Z0-9]{8,30}$/),
-});
-
-exports.login = Joi.object({
-  email: Joi.string().min(3).required().email(),
-  password: Joi.string()
-    .min(8)
-    .required()
-    .regex(/^[a-zA-Z0-9]{8,30}$/),
-});
 
 exports.updatePassword = Joi.object().keys({
   passwordCurrely: Joi.string()

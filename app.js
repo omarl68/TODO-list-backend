@@ -13,9 +13,9 @@ const options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Library API",
+      title: "Docs Test",
       version: "1.0.0",
-      description: "A simple Express Library API",
+      description: "Apis testing and docments",
     },
     servers: [
       {
@@ -23,7 +23,7 @@ const options = {
       },
     ],
   },
-  apis: ["./routes/userRoutes.js"],
+  apis: ["./routes/*.js", "./routes/schemas/*.js"],
 };
 
 const specs = swaggerJsDoc(options);

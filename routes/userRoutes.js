@@ -8,16 +8,89 @@ const {
   updateUser,
   getUsers,
   checkUserId,
-  signup,
-  login,
   updatePassword,
   updateMe,
-  resetPassword,
-  forgetPassword,
 } = require("./schemas/userSchemas");
 const { schemaValidator } = require("../middlewares/schemaValidator");
+/**
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *      bearerAuth:
+ *          type: http
+ *          scheme: bearer
+ *          bearerFormat: JWT
+ */
 
+/**
+ * @swagger
+ * /users/update-password:
+ *  patch:
+ *    summary: Update My  password
+ *    tags: [users]
+ *    parameters:
+ *      - in: path
+ *        passwordCurrely : string
+ *        password: string,
+ *        passwordConfirm : string,
+ *        schema:
+ *          type: string
+ *        description: The user id
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *             $ref: '#/components/schemas/Updatepwd'
+ *    responses:
+ *      200:
+ *        description: The user was updated
+ *        content:
+ *          application/json:
+ *            schema:
+ *             $ref: '#/components/schemas/Updatepwd'
+ *      404:
+ *        description: The user was not found
+ *      500:
+ *        description: Some error happened
+ *    security:
+ *      - bearerAuth: []
+ */
 
+/**
+ * @swagger
+ * /users/me:
+ *  patch:
+ *    summary: Update my name or my email
+ *    tags: [users]
+ *    parameters:
+ *      - in: path
+ *        name: string,
+ *        email : string
+ *        schema:
+ *          type: string
+ *
+ *        description: The user id
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: ''
+ *    responses:
+ *      200:
+ *        description: The user was updated
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/users'
+ *      404:
+ *        description: The user was not found
+ *      500:
+ *        description: Some error happened
+ *    security:
+ *      - bearerAuth: []
+ */
 
 router.patch(
   "/update-password",
@@ -51,6 +124,8 @@ router.patch(
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/users'
+ *     security:
+ *        - bearerAuth: []
  */
 
 /**
@@ -71,9 +146,11 @@ router.patch(
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/user'
+ *               $ref: '#/components/schemas/users'
  *       500:
  *         description: Some server error
+ *     security:
+ *       - bearerAuth: []
  */
 router
   .route("/")
@@ -94,25 +171,22 @@ router
  * @swagger
  * /users/{id}:
  *   get:
- *     summary: Get the users by id
+ *     summary: Get one user by id
  *     tags: [users]
  *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: string
- *         required: true
- *         description: The users id
+ *      - in: path
+ *        name: id
  *     responses:
  *       200:
- *         description: The users description by id
- *         contens:
+ *         content:
  *           application/json:
  *             schema:
+ *               type: object
  *               $ref: '#/components/schemas/users'
- *       404:
- *         description: The users was not found
+ *     security:
+ *      - bearerAuth: []
  */
+
 
 /**
  * @swagger
@@ -144,6 +218,8 @@ router
  *        description: The user was not found
  *      500:
  *        description: Some error happened
+ *    security:
+ *      - bearerAuth: []
  */
 
 /**
@@ -165,6 +241,8 @@ router
  *         description: The user was deleted
  *       404:
  *         description: The user was not found
+ *     security:
+ *       - bearerAuth: []
  */
 router
   .route("/:id")
