@@ -5,6 +5,9 @@ const morgan = require("morgan");
 const AppError = require("./utils/appError");
 const globleErrorHandler = require("./controllers/errorController");
 
+const userRouter = require("./routes/userRoutes");
+const taskRouter = require("./routes/taskRoutes");
+
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUI = require("swagger-ui-express");
 
@@ -34,9 +37,6 @@ if (process.env.NODE_ENV === "development") {
 }
 
 app.use(express.static(`${__dirname}/public`));
-
-const userRouter = require("./routes/userRoutes");
-const taskRouter = require("./routes/taskRoutes");
 
 app.use(morgan("dev"));
 app.use(express.json());

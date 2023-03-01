@@ -49,7 +49,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   ) {
     token = req.headers.authorization.split(" ")[1];
   }
-  console.log(token);
+
   if (!token) {
     return next(
       new AppError("you are not logged in! Please log in to get access .", 401)
@@ -133,7 +133,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     passwordResetToken: req.params.token,
     passwordREsetExpires: { $gt: Date.now() },
   });
-  console.log(await User.find({ passwordREsetExpires: { $gt: Date.now() } }));
+
   if (!user) {
     return next(new AppError("Token is invalid or has expired", 400));
   }
