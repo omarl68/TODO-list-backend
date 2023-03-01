@@ -34,17 +34,6 @@ exports.getMyTaskById = catchAsync(async (req, res, next) => {
 });
 
 exports.updateMyTask = catchAsync(async (req, res, next) => {
-  /*   const task = await Task.findOneAndUpdate(
-    {
-      _id: req.params.id,
-      createdBy: req.user?._id,
-    },
-    req.body,
-    {
-      runValidators: true,
-      new: true,
-    }
-  ); */
   const task = await TaskRepo.findByIdAndUpdate(
     {
       _id: req.params.id,
@@ -80,7 +69,7 @@ exports.deleteMyTask = catchAsync(async (req, res, next) => {
 
 
 exports.ShareTo = catchAsync(async (req, res, next) => {
-  console.log(req.body.share);
+  
   const user = await UserRepo.findById(req.body.share);
   if (!user) {
     return next(new AppError("user not Found ! try Again .", 404));

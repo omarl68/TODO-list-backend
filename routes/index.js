@@ -7,7 +7,7 @@ const taskRouter = require("./taskRoutes");
 const commentRouter = require("./commentsRoutes");
 router.use("/api/v1", authRouter);
 router.use("/api/v1/users", userRouter);
-router.use("/api/v1/tasks", taskRouter);
-router.use("/api/v1/tasks", commentRouter);
+router.use("/api/v1/tasks", taskRouter,commentRouter);
+
 
 module.exports = router;

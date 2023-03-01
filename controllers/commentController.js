@@ -5,13 +5,13 @@ const catchAsync = require("../utils/catchAsync.js");
 
 exports.CreateComment = catchAsync(async (req, res, next) => {
   req.body.creator = req.user?._id;
-  const comment = await CommentRepo.create(req.body);
   const newTask = await TaskRepo.findById({
     _id: req.params.id,
   });
   if (!newTask) {
     return next(new AppError("task not Found ! try Again .", 404));
   }
+  const comment = await CommentRepo.create(req.body);
   newTask.comments.push(comment._id);
   await newTask.save();
   res.status(200).json({
