@@ -5,11 +5,11 @@ const morgan = require("morgan");
 const AppError = require("./utils/appError");
 const globleErrorHandler = require("./controllers/errorController");
 
-const userRouter = require("./routes/userRoutes");
-const taskRouter = require("./routes/taskRoutes");
+
 
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUI = require("swagger-ui-express");
+const router = require("./routes");
 
 const options = {
   definition: {
@@ -46,8 +46,8 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/api/v1/users", userRouter);
-app.use("/api/v1/tasks", taskRouter);
+
+app.use(router);
 app.use(globleErrorHandler);
 
 app.all("*", (req, res, next) => {
