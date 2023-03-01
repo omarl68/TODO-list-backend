@@ -3,7 +3,7 @@ const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync.js");
 const TaskRepo = require("../db/repositories/taskRepo");
 const UserRepo = require("../db/repositories/userRepo");
-const CommentRepo = require("../db/repositories/commentRepo");
+
 
 //user
 exports.getMyTask = catchAsync(async (req, res, next) => {
@@ -77,23 +77,7 @@ exports.deleteMyTask = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.CreateComment = catchAsync(async (req, res) => {
-  req.body.creator = req.user?._id;
-  /*   const comment = await Comment.create(req.body); 
-const newTask = await Task.findById({
-  _id: req.params.id,
-});*/
-  const comment = await CommentRepo.create(req.body);
-  const newTask = await TaskRepo.findById({
-    _id: req.params.id,
-  });
-  newTask.comments.push(comment._id);
-  await newTask.save();
-  res.status(200).json({
-    status: "success",
-    comment,
-  });
-});
+
 
 exports.ShareTo = catchAsync(async (req, res, next) => {
   console.log(req.body.share);

@@ -41,13 +41,7 @@ router
     authController.restrictTo("admin", "user"),
     taskController.deleteMyTask
   );
-router.post(
-  "/:id/comment",
-  authController.protect,
-  schemaValidator(createComment),
-  authController.restrictTo("admin", "user"),
-  taskController.CreateComment
-);
+
 router.patch(
   "/:id/share",
   authController.protect,

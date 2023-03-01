@@ -5,8 +5,6 @@ const morgan = require("morgan");
 const AppError = require("./utils/appError");
 const globleErrorHandler = require("./controllers/errorController");
 
-
-
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUI = require("swagger-ui-express");
 const router = require("./routes");
@@ -45,7 +43,6 @@ app.use((req, res, next) => {
   req.requesTime = new Date().toISOString();
   next();
 });
-
 
 app.use(router);
 app.use(globleErrorHandler);

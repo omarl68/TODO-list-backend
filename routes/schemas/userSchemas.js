@@ -1,6 +1,42 @@
 const Joi = require("joi");
 const { JoiObjectId } = require("../../middlewares/schemaValidator");
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     users:
+ *       type: object
+ *       required:
+ *         - name
+ *         - email
+ *         - password
+ *         - passwordConfirm
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: Your Name
+ *         email:
+ *           type: string
+ *           description: Your email
+ *         password:
+ *           type: string
+ *           description: Your Password
+ *         passwordConfirm:
+ *           type: string
+ *           description: Your Confirm Password
+ *         role:
+ *          type: string
+ *          description: admin, user ,rh ,team-leader
+ *       example:
+ *         _id: 63f487007fc29754b6833fc4
+ *         name: test
+ *         email: test@email.com
+ *         password: Aa123456
+ *         passwordConfirm: Aa123456
+ */
+
+
 exports.createUser = Joi.object({
   name: Joi.string().trim().min(2).max(20).required(),
   email: Joi.string().min(3).required().email(),

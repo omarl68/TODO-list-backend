@@ -16,54 +16,8 @@ const {
   forgetPassword,
 } = require("./schemas/userSchemas");
 const { schemaValidator } = require("../middlewares/schemaValidator");
-/**
- * @swagger
- * components:
- *   schemas:
- *     users:
- *       type: object
- *       required:
- *         - name
- *         - email
- *         - password
- *         - passwordConfirm
- *       properties:
- *         name:
- *           type: string
- *           description: Your Name
- *         email:
- *           type: string
- *           description: Your email
- *         password:
- *           type: string
- *           description: Your Password
- *         passwordConfirm:
- *           type: string
- *           description: Your Confirm Password
- *         role:
- *          type: string
- *          description: admin, user ,rh ,team-leader
- *       example:
- *         _id: 63f487007fc29754b6833fc4
- *         name: test
- *         email: test@email.com
- *         password: Aa123456
- *         passwordConfirm: Aa123456
- */
 
-router.post("/signup", schemaValidator(signup), authController.signup);
-router.post("/login", schemaValidator(login), authController.login);
 
-router.post(
-  "/forgotpassword",
-  schemaValidator(forgetPassword),
-  authController.forgotPassword
-);
-router.patch(
-  "/resetpassword/:token",
-  schemaValidator(resetPassword),
-  authController.resetPassword
-);
 
 router.patch(
   "/update-password",
