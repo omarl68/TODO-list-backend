@@ -15,7 +15,7 @@ const { schemaValidator } = require("../middlewares/schemaValidator");
  * @swagger
  * /signup:
  *   post:
- *     summary: Create a new user
+ *     summary: registor user
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -40,7 +40,7 @@ const { schemaValidator } = require("../middlewares/schemaValidator");
  * @swagger
  * /login:
  *   post:
- *     summary: Create a new user
+ *     summary: user login
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -67,7 +67,7 @@ router.post("/login", schemaValidator(login), authController.login);
  * @swagger
  * /forgotpassword:
  *   post:
- *     summary: Create a new user
+ *     summary: send mail
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -82,6 +82,31 @@ router.post("/login", schemaValidator(login), authController.login);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/AuthForgetPassword'
+ *       500:
+ *         description: Some server error
+ *     security:
+ *       - bearerAuth: []
+ */
+
+/**
+ * @swagger
+ * /resetpassword/:token:
+ *   post:
+ *     summary: reset your password
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/resetpassword'
+ *     responses:
+ *       201:
+ *         description: The password was successfully created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/resetpassword'
  *       500:
  *         description: Some server error
  *     security:

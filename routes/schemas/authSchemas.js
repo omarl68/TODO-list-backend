@@ -68,6 +68,26 @@ const Joi = require("joi");
  *       example:
  *         email: test@email.com
  */
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     resetpassword:
+ *       type: object
+ *       required:
+ *         - password
+ *         - passwordConfirm
+ *       properties:
+ *         password:
+ *           type: string
+ *           description: Your new password
+ *         passwordConfirm:
+ *           type: string
+ *           description: Your Confirm Password
+ *       example:
+ *         password: Aa123456
+ *         passwordConfirm : Aa123456
+ */
 
 
 

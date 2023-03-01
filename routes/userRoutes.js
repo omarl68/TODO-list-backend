@@ -113,7 +113,7 @@ router.patch(
  * @swagger
  * /users:
  *   get:
- *     summary: Returns the list of all the users
+ *     summary: Returns the list of all the users for admin
  *     tags: [users]
  *     responses:
  *       200:
@@ -132,7 +132,7 @@ router.patch(
  * @swagger
  * /users:
  *   post:
- *     summary: Create a new user
+ *     summary: Create a new user for admin
  *     tags: [users]
  *     requestBody:
  *       required: true
@@ -171,7 +171,7 @@ router
  * @swagger
  * /users/{id}:
  *   get:
- *     summary: Get one user by id
+ *     summary: Get one user by id for admin
  *     tags: [users]
  *     parameters:
  *      - in: path
@@ -192,7 +192,7 @@ router
  * @swagger
  * /users/{id}:
  *  patch:
- *    summary: Update the user by the id
+ *    summary: Update the user by the id for admin
  *    tags: [users]
  *    parameters:
  *      - in: path
@@ -226,7 +226,7 @@ router
  * @swagger
  * /users/{id}:
  *   delete:
- *     summary: Remove the user by id
+ *     summary: Remove the user by id for admin
  *     tags: [users]
  *     parameters:
  *       - in: path

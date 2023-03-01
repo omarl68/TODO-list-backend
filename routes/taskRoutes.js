@@ -246,6 +246,49 @@ router
 
 //admin
 
+/**
+ * @swagger
+ * /all/admin:
+ *   get:
+ *     summary: Returns the list of all the tasks of all users for admin
+ *     tags: [tasks]
+ *     responses:
+ *       200:
+ *         description: The list of the tasks
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/tasks'
+ *     security:
+ *        - bearerAuth: []
+ */
+
+/**
+ * @swagger
+ * /all/admin:
+ *   post:
+ *     summary: Create a new task for admin
+ *     tags: [tasks]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/tasks'
+ *     responses:
+ *       201:
+ *         description: The task was successfully created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/tasks'
+ *       500:
+ *         description: Some server error
+ *     security:
+ *       - bearerAuth: []
+ */
 router
   .route("/all/admin")
   .get(
@@ -260,6 +303,85 @@ router
     authController.restrictTo("admin"),
     taskController.CreateTask
   );
+
+
+/**
+ * @swagger
+ * /admin/{id}:
+ *   get:
+ *     summary: Get one task by id for admin
+ *     tags: [tasks]
+ *     parameters:
+ *      - in: path
+ *        name: id
+ *     responses:
+ *       200:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               $ref: '#/components/schemas/tasks'
+ *     security:
+ *      - bearerAuth: []
+ */
+
+
+/**
+ * @swagger
+ * /admin/{id}:
+ *  patch:
+ *    summary: Update the task by the id for admin
+ *    tags: [tasks]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *
+ *        description: The task id
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: ''
+ *    responses:
+ *      200:
+ *        description: The task was updated
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/tasks'
+ *      404:
+ *        description: The task was not found
+ *      500:
+ *        description: Some error happened
+ *    security:
+ *      - bearerAuth: []
+ */
+
+/**
+ * @swagger
+ * /admin/{id}:
+ *   delete:
+ *     summary: Remove the task by id for admin
+ *     tags: [tasks]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The task id
+ *
+ *     responses:
+ *       204:
+ *         description: The task was deleted
+ *       404:
+ *         description: The task was not found
+ *     security:
+ *       - bearerAuth: []
+ */
 
 router
   .route("/admin/:id")
